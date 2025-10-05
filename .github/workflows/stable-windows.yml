@@ -111,6 +111,12 @@ jobs:
           chmod +x ./check_cron_or_pr.sh
           chmod +x ./check_tags.sh
           chmod +x ./build.sh
+          chmod +x ./update_settings.sh
+          chmod +x ./build/windows/package.sh  # 新增
+          chmod +x ./prepare_assets.sh         # 新增
+          chmod +x ./prepare_checksums.sh      # 新增
+          chmod +x ./release.sh                # 新增
+          chmod +x ./update_version.sh         # 新增
           echo "Script permissions set successfully"
 
       - name: Switch to relevant branch
@@ -208,6 +214,13 @@ jobs:
           chmod +x ./get_repo.sh
           chmod +x ./check_cron_or_pr.sh
           chmod +x ./check_tags.sh
+          chmod +x ./build.sh
+          chmod +x ./update_settings.sh
+          chmod +x ./build/windows/package.sh  # 新增
+          chmod +x ./prepare_assets.sh         # 新增
+          chmod +x ./prepare_checksums.sh      # 新增
+          chmod +x ./release.sh                # 新增
+          chmod +x ./update_version.sh         # 新增
           echo "Script permissions set successfully"
           
       - name: Switch to relevant branch
