@@ -66,6 +66,12 @@ jobs:
           VOID_RELEASE: ${{ github.event.inputs.void_release }} # Void added this
         run: ./get_repo.sh
 
+      - name: Set comprehensive script permissions
+        run: |
+          # 给所有 .sh 文件添加执行权限
+          find . -name "*.sh" -exec chmod +x {} \;
+          echo "Script permissions set successfully"
+          
       - name: Check PR or cron
         env:
           GENERATE_ASSETS: ${{ github.event.inputs.generate_assets }}
