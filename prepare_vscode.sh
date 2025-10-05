@@ -139,7 +139,7 @@ setpath "product" "twitterUrl" "https://x.com/thevoideditor"
 
 if [[ "${DISABLE_UPDATE}" != "yes" ]]; then
   setpath "product" "updateUrl" "https://raw.githubusercontent.com/voideditor/versions/refs/heads/main"
-  setpath "product" "downloadUrl" "https://github.com/voideditor/binaries/releases"
+  setpath "product" "downloadUrl" "https://github.com/xumingming790/binaries/releases"
 fi
 
 if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
