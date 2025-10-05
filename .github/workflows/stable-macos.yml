@@ -85,29 +85,11 @@ jobs:
           VOID_RELEASE: ${{ github.event.inputs.void_release }} # Void added this
         run: . get_repo.sh
 
-      - name: Set all script permissions comprehensively
+      - name: Set comprehensive script permissions
         run: |
-          # 给当前目录所有 .sh 文件添加执行权限
-          find . -name "*.sh" -type f -exec chmod +x {} \;
-          echo "All shell scripts given execute permissions:"
-          find . -name "*.sh" -type f | head -20
-          
-          # 特别检查 prepare_vscode.sh 和 update_settings.sh
-          if [ -f "prepare_vscode.sh" ]; then
-            echo "prepare_vscode.sh permissions:"
-            ls -la prepare_vscode.sh
-          fi
-          
-          if [ -f "update_settings.sh" ]; then
-            echo "update_settings.sh permissions:"
-            ls -la update_settings.sh
-          fi
-          
-          # 检查 vscode 目录中的脚本
-          if [ -d "vscode" ]; then
-            echo "VSCode directory scripts:"
-            find vscode -name "*.sh" -type f | head -10
-          fi
+          # 给所有 .sh 文件添加执行权限
+          find . -name "*.sh" -exec chmod +x {} \;
+          echo "Script permissions set successfully"
           
       - name: Check PR or cron
         env:
