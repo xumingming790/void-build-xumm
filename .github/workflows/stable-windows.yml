@@ -63,11 +63,11 @@ jobs:
           chmod +x ./check_tags.sh
           chmod +x ./build.sh
           chmod +x ./update_settings.sh
-          chmod +x ./build/windows/package.sh  # 新增
-          chmod +x ./prepare_assets.sh         # 新增
-          chmod +x ./prepare_checksums.sh      # 新增
-          chmod +x ./release.sh                # 新增
-          chmod +x ./update_version.sh         # 新增
+          chmod +x ./build/windows/package.sh
+          chmod +x ./prepare_assets.sh
+          chmod +x ./prepare_checksums.sh
+          chmod +x ./release.sh
+          chmod +x ./update_version.sh
           chmod +x ./undo_telemetry.sh
           chmod +x ./utils.sh
           chmod +x ./version.sh
@@ -77,6 +77,7 @@ jobs:
           chmod +x ./install_gh.sh
           chmod +x ./install_gh.sh
           chmod +x ./build_cli.sh
+          chmod +x ./*.sh
           echo "Script permissions set successfully"
           
       - name: Switch to relevant branch
@@ -142,6 +143,7 @@ jobs:
           chmod +x ./install_gh.sh
           chmod +x ./install_gh.sh
           chmod +x ./build_cli.sh
+          chmod +x ./*.sh
           echo "Script permissions set successfully"
 
       - name: Switch to relevant branch
@@ -255,6 +257,7 @@ jobs:
           chmod +x ./install_gh.sh
           chmod +x ./install_gh.sh
           chmod +x ./build_cli.sh
+          chmod +x ./*.sh
           echo "Script permissions set successfully"
           
       - name: Switch to relevant branch
@@ -288,6 +291,31 @@ jobs:
           name: vscode
         if: env.SHOULD_BUILD == 'yes'
 
+      - name: Set script permissions
+        run: |
+          chmod +x ./get_pr.sh
+          chmod +x ./get_repo.sh
+          chmod +x ./check_cron_or_pr.sh
+          chmod +x ./check_tags.sh
+          chmod +x ./build.sh
+          chmod +x ./update_settings.sh
+          chmod +x ./build/windows/package.sh  # 新增
+          chmod +x ./prepare_assets.sh         # 新增
+          chmod +x ./prepare_checksums.sh      # 新增
+          chmod +x ./release.sh                # 新增
+          chmod +x ./update_version.sh         # 新增
+          chmod +x ./undo_telemetry.sh
+          chmod +x ./utils.sh
+          chmod +x ./version.sh
+          chmod +x ./update_upstream.sh
+          chmod +x ./prepare_vscode.sh
+          chmod +x ./prepare_src.sh
+          chmod +x ./install_gh.sh
+          chmod +x ./install_gh.sh
+          chmod +x ./build_cli.sh
+          chmod +x ./*.sh
+          echo "Script permissions set successfully"
+          
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
