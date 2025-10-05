@@ -96,6 +96,23 @@ jobs:
         run: . check_tags.sh
         if: env.SHOULD_DEPLOY == 'yes'
 
+      - name: Set scripts permissions
+        run: |
+          chmod +x build.sh
+          chmod +x get_pr.sh
+          chmod +x get_repo.sh
+          chmod +x check_cron_or_pr.sh
+          chmod +x check_tags.sh
+          chmod +x prepare_assets.sh
+          chmod +x release.sh
+          chmod +x update_version.sh
+          chmod +x prepare_vscode.sh
+          chmod +x build_cli.sh
+          # 如果有其他脚本目录也设置权限
+          if [ -d "build/windows/rtf" ]; then
+            chmod +x build/windows/rtf/make.sh
+          fi
+          
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
