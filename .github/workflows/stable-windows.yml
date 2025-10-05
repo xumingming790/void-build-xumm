@@ -55,6 +55,14 @@ jobs:
         with:
           ref: ${{ env.GITHUB_BRANCH }}
 
+      - name: Set script permissions
+        run: |
+          chmod +x ./get_pr.sh
+          chmod +x ./get_repo.sh
+          chmod +x ./check_cron_or_pr.sh
+          chmod +x ./check_tags.sh
+          echo "Script permissions set successfully"
+          
       - name: Switch to relevant branch
         env:
           PULL_REQUEST_ID: ${{ github.event.inputs.checkout_pr }}
@@ -65,13 +73,7 @@ jobs:
           VOID_COMMIT: ${{ github.event.inputs.void_commit }} # Void added this
           VOID_RELEASE: ${{ github.event.inputs.void_release }} # Void added this
         run: ./get_repo.sh
-
-      - name: Set comprehensive script permissions
-        run: |
-          # 给所有 .sh 文件添加执行权限
-          find . -name "*.sh" -exec chmod +x {} \;
-          echo "Script permissions set successfully"
-          
+    
       - name: Check PR or cron
         env:
           GENERATE_ASSETS: ${{ github.event.inputs.generate_assets }}
