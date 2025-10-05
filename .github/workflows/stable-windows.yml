@@ -278,17 +278,49 @@ jobs:
           python-version: '3.11'
         if: env.SHOULD_BUILD == 'yes'
 
+      - name: Download vscode artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vscode
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Extract and verify vscode artifact
+        run: |
+          echo "=== 解压 vscode artifact ==="
+          tar -xzf vscode.tar.gz
+          echo "=== 解压后文件结构 ==="
+          ls -la
+          echo "=== 检查 includes 目录 ==="
+          find . -name "includes" -type d
+          echo "=== 查找 vscodium-variables.wxi 文件 ==="
+          find . -name "vscodium-variables.wxi" -type f
+          echo "=== 确认当前工作目录 ==="
+          pwd
+        if: env.SHOULD_BUILD == 'yes'
+
+      # 关键修复：确保在正确的工作目录
+      - name: Ensure correct working directory
+        run: |
+          echo "当前工作目录: $(pwd)"
+          echo "检查关键文件是否存在..."
+          if [[ -f "./includes/vscodium-variables.wxi" ]]; then
+            echo "✅ 找到 vscodium-variables.wxi 文件"
+            echo "文件路径: $(realpath ./includes/vscodium-variables.wxi)"
+          else
+            echo "❌ 未找到 vscodium-variables.wxi 文件"
+            echo "当前目录的文件列表:"
+            ls -la
+            echo "includes 目录内容:"
+            ls -la includes/ 2>/dev/null || echo "includes 目录不存在"
+            exit 1
+          fi
+        if: env.SHOULD_BUILD == 'yes'
+
       - name: Check existing VSCodium tags/releases
         env:
           DISABLE_MSI: ${{ vars.DISABLE_STABLE_MSI }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./check_tags.sh
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Download vscode artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vscode
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Set script permissions
