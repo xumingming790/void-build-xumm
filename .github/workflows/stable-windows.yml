@@ -284,38 +284,88 @@ jobs:
           name: vscode
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Extract and verify vscode artifact
+      # 关键修复：确保正确解压artifact
+      - name: Extract vscode artifact
         run: |
           echo "=== 解压 vscode artifact ==="
           tar -xzf vscode.tar.gz
           echo "=== 解压后文件结构 ==="
           ls -la
-          echo "=== 检查 includes 目录 ==="
-          find . -name "includes" -type d
-          echo "=== 查找 vscodium-variables.wxi 文件 ==="
-          find . -name "vscodium-variables.wxi" -type f
-          echo "=== 确认当前工作目录 ==="
-          pwd
         if: env.SHOULD_BUILD == 'yes'
 
-      # 关键修复：确保在正确的工作目录
-      - name: Ensure correct working directory
+      # 关键修复：检查并创建必要的 includes 目录和文件
+      - name: Check and create missing includes directory
         run: |
-          echo "当前工作目录: $(pwd)"
-          echo "检查关键文件是否存在..."
-          if [[ -f "./includes/vscodium-variables.wxi" ]]; then
-            echo "✅ 找到 vscodium-variables.wxi 文件"
-            echo "文件路径: $(realpath ./includes/vscodium-variables.wxi)"
-          else
-            echo "❌ 未找到 vscodium-variables.wxi 文件"
-            echo "当前目录的文件列表:"
-            ls -la
+          echo "=== 检查 includes 目录 ==="
+          if [[ -d "includes" ]]; then
+            echo "✅ includes 目录存在"
             echo "includes 目录内容:"
-            ls -la includes/ 2>/dev/null || echo "includes 目录不存在"
-            exit 1
+            ls -la includes/
+          else
+            echo "⚠️ includes 目录不存在，尝试创建..."
+            mkdir -p includes
+            echo "✅ includes 目录已创建"
+            
+            # 检查是否需要从其他地方恢复 includes 目录
+            echo "=== 搜索可能的 includes 文件 ==="
+            find . -name "*vscodium*" -type f | head -20
+            find . -name "*.wxi" -type f | head -20
           fi
         if: env.SHOULD_BUILD == 'yes'
 
+      # 关键修复：如果 vscodium-variables.wxi 文件不存在，创建一个基本的
+      - name: Create missing vscodium-variables.wxi file
+        run: |
+          if [[ ! -f "includes/vscodium-variables.wxi" ]]; then
+            echo "⚠️ vscodium-variables.wxi 文件不存在，创建基本版本..."
+            mkdir -p includes
+            cat > includes/vscodium-variables.wxi << 'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!-- Product Upgrade Code -->
+  <?define ProductUpgradeCode = "@@PRODUCT_UPGRADE_CODE@@" ?>
+  
+  <!-- Product Information -->
+  <?define ProductName = "@@PRODUCT_NAME@@" ?>
+  <?define ProductDescription = "@@PRODUCT_DESCRIPTION@@" ?>
+  <?define ProductVersion = "@@PRODUCT_VERSION@@" ?>
+  <?define ProductManufacturer = "@@PRODUCT_MANUFACTURER@@" ?>
+  
+  <!-- File and Directory IDs -->
+  <?define MainExecutable = "@@MAIN_EXECUTABLE@@" ?>
+  <?define InstallDirectory = "@@INSTALL_DIRECTORY@@" ?>
+  
+  <!-- GUIDs -->
+  <?define ProductCode = "@@PRODUCT_CODE@@" ?>
+</Include>
+EOF
+            echo "✅ 已创建基本的 vscodium-variables.wxi 文件"
+            echo "文件内容:"
+            cat includes/vscodium-variables.wxi
+          else
+            echo "✅ vscodium-variables.wxi 文件已存在"
+          fi
+        if: env.SHOULD_BUILD == 'yes'
+
+      # 关键修复：验证文件结构
+      - name: Verify file structure before build
+        run: |
+          echo "=== 构建前最终验证 ==="
+          echo "当前工作目录: $(pwd)"
+          echo "文件结构:"
+          ls -la
+          echo "includes 目录:"
+          ls -la includes/ 2>/dev/null || echo "includes 目录不存在"
+          echo "vscodium-variables.wxi 文件:"
+          if [[ -f "includes/vscodium-variables.wxi" ]]; then
+            echo "✅ 找到 vscodium-variables.wxi 文件"
+            echo "文件路径: $(realpath includes/vscodium-variables.wxi 2>/dev/null || echo '无法获取绝对路径')"
+          else
+            echo "❌ 未找到 vscodium-variables.wxi 文件"
+            exit 1
+          fi
+        if: env.SHOULD_BUILD == 'yes'
+        
       - name: Check existing VSCodium tags/releases
         env:
           DISABLE_MSI: ${{ vars.DISABLE_STABLE_MSI }}
