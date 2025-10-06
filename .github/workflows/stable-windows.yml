@@ -317,35 +317,33 @@ jobs:
       - name: Create missing vscodium-variables.wxi file
         run: |
           if [[ ! -f "includes/vscodium-variables.wxi" ]]; then
-            echo "⚠️ vscodium-variables.wxi 文件不存在，创建基本版本..."
-            mkdir -p includes
-            cat > includes/vscodium-variables.wxi << 'EOF'
-            <?xml version="1.0" encoding="utf-8"?>
-            <Include>
-            <!-- Product Upgrade Code -->
-            <?define ProductUpgradeCode = "@@PRODUCT_UPGRADE_CODE@@" ?>
-  
-            <!-- Product Information -->
-            <?define ProductName = "@@PRODUCT_NAME@@" ?>
-            <?define ProductDescription = "@@PRODUCT_DESCRIPTION@@" ?>
-            <?define ProductVersion = "@@PRODUCT_VERSION@@" ?>
-            <?define ProductManufacturer = "@@PRODUCT_MANUFACTURER@@" ?>
-  
-           <!-- File and Directory IDs -->
-           <?define MainExecutable = "@@MAIN_EXECUTABLE@@" ?>
-           <?define InstallDirectory = "@@INSTALL_DIRECTORY@@" ?>
-  
-           <!-- GUIDs -->
-           <?define ProductCode = "@@PRODUCT_CODE@@" ?>
-           </Include>
-           EOF
-            echo "✅ 已创建基本的 vscodium-variables.wxi 文件"
-            echo "文件内容:"
-            cat includes/vscodium-variables.wxi
+          echo "⚠️ vscodium-variables.wxi 文件不存在，创建基本版本..."
+          mkdir -p includes
+          echo '<?xml version="1.0" encoding="utf-8"?>' > includes/vscodium-variables.wxi
+          echo '<Include>' >> includes/vscodium-variables.wxi
+          echo '  <!-- Product Upgrade Code -->' >> includes/vscodium-variables.wxi
+          echo '  <?define ProductUpgradeCode = "@@PRODUCT_UPGRADE_CODE@@" ?>' >> includes/vscodium-variables.wxi
+          echo '' >> includes/vscodium-variables.wxi
+          echo '  <!-- Product Information -->' >> includes/vscodium-variables.wxi
+          echo '  <?define ProductName = "@@PRODUCT_NAME@@" ?>' >> includes/vscodium-variables.wxi
+          echo '  <?define ProductDescription = "@@PRODUCT_DESCRIPTION@@" ?>' >> includes/vscodium-variables.wxi
+          echo '  <?define ProductVersion = "@@PRODUCT_VERSION@@" ?>' >> includes/vscodium-variables.wxi
+          echo '  <?define ProductManufacturer = "@@PRODUCT_MANUFACTURER@@" ?>' >> includes/vscodium-variables.wxi
+          echo '' >> includes/vscodium-variables.wxi
+          echo '  <!-- File and Directory IDs -->' >> includes/vscodium-variables.wxi
+          echo '  <?define MainExecutable = "@@MAIN_EXECUTABLE@@" ?>' >> includes/vscodium-variables.wxi
+          echo '  <?define InstallDirectory = "@@INSTALL_DIRECTORY@@" ?>' >> includes/vscodium-variables.wxi
+          echo '' >> includes/vscodium-variables.wxi
+          echo '  <!-- GUIDs -->' >> includes/vscodium-variables.wxi
+          echo '  <?define ProductCode = "@@PRODUCT_CODE@@" ?>' >> includes/vscodium-variables.wxi
+          echo '</Include>' >> includes/vscodium-variables.wxi
+          echo "✅ 已创建基本的 vscodium-variables.wxi 文件"
+          echo "文件内容:"
+          cat includes/vscodium-variables.wxi
           else
-            echo "✅ vscodium-variables.wxi 文件已存在"
+          echo "✅ vscodium-variables.wxi 文件已存在"
           fi
-        if: env.SHOULD_BUILD == 'yes'
+          if: env.SHOULD_BUILD == 'yes'
 
       # 关键修复：验证文件结构
       - name: Verify file structure before build
