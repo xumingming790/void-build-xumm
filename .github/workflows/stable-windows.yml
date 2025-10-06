@@ -293,6 +293,19 @@ jobs:
           ls -la
         if: env.SHOULD_BUILD == 'yes'
 
+      # 关键修复：转换脚本格式为Unix格式
+      - name: Convert script format to Unix
+        run: |
+          echo "=== 转换脚本格式为Unix格式 ==="
+          # 转换主要脚本
+          find . -name "*.sh" -type f -exec sed -i 's/\r$//' {} \;
+          # 特别确保package.sh格式正确
+          if [[ -f "./build/windows/package.sh" ]]; then
+            sed -i 's/\r$//' ./build/windows/package.sh
+            echo "✅ 已转换 package.sh 格式"
+          fi
+        if: env.SHOULD_BUILD == 'yes'
+
       # 关键修复：检查并创建必要的 includes 目录和文件
       - name: Check and create missing includes directory
         run: |
