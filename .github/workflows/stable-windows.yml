@@ -320,25 +320,25 @@ jobs:
             echo "⚠️ vscodium-variables.wxi 文件不存在，创建基本版本..."
             mkdir -p includes
             cat > includes/vscodium-variables.wxi << 'EOF'
-<?xml version="1.0" encoding="utf-8"?>
-<Include>
-  <!-- Product Upgrade Code -->
-  <?define ProductUpgradeCode = "@@PRODUCT_UPGRADE_CODE@@" ?>
+            <?xml version="1.0" encoding="utf-8"?>
+            <Include>
+            <!-- Product Upgrade Code -->
+            <?define ProductUpgradeCode = "@@PRODUCT_UPGRADE_CODE@@" ?>
   
-  <!-- Product Information -->
-  <?define ProductName = "@@PRODUCT_NAME@@" ?>
-  <?define ProductDescription = "@@PRODUCT_DESCRIPTION@@" ?>
-  <?define ProductVersion = "@@PRODUCT_VERSION@@" ?>
-  <?define ProductManufacturer = "@@PRODUCT_MANUFACTURER@@" ?>
+            <!-- Product Information -->
+            <?define ProductName = "@@PRODUCT_NAME@@" ?>
+            <?define ProductDescription = "@@PRODUCT_DESCRIPTION@@" ?>
+            <?define ProductVersion = "@@PRODUCT_VERSION@@" ?>
+            <?define ProductManufacturer = "@@PRODUCT_MANUFACTURER@@" ?>
   
-  <!-- File and Directory IDs -->
-  <?define MainExecutable = "@@MAIN_EXECUTABLE@@" ?>
-  <?define InstallDirectory = "@@INSTALL_DIRECTORY@@" ?>
+           <!-- File and Directory IDs -->
+           <?define MainExecutable = "@@MAIN_EXECUTABLE@@" ?>
+           <?define InstallDirectory = "@@INSTALL_DIRECTORY@@" ?>
   
-  <!-- GUIDs -->
-  <?define ProductCode = "@@PRODUCT_CODE@@" ?>
-</Include>
-EOF
+           <!-- GUIDs -->
+           <?define ProductCode = "@@PRODUCT_CODE@@" ?>
+           </Include>
+           EOF
             echo "✅ 已创建基本的 vscodium-variables.wxi 文件"
             echo "文件内容:"
             cat includes/vscodium-variables.wxi
