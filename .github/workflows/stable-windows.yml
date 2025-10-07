@@ -213,7 +213,6 @@ jobs:
       fail-fast: false
       matrix:
         vscode_arch:
-          - x64
           - arm64
     defaults:
       run:
